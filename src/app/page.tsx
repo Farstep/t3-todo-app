@@ -1,60 +1,55 @@
-import Link from "next/link";
-
+import type { Metadata } from "next";
+import Image from "next/image";
 import { getServerAuthSession } from "~/server/auth";
-import { api } from "~/trpc/server";
+import { SignInButton } from "./_components/sign-in-button";
+import { SignOutButton } from "./_components/sign-out-button";
+
+export const metadata: Metadata = {
+  title: "ToDo アプリ",
+  description: "最高の ToDo アプリ",
+};
 
 export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
   const session = await getServerAuthSession();
 
   return (
-    <main className="text-white flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
+    <div className="min-h-screen bg-olive-one p-0 selection:bg-green-two md:px-8 md:py-24">
+      <main className="mx-auto max-w-none rounded-none bg-cream-four px-5 pb-10 pt-24 outline-none md:max-w-[60rem] md:rounded-2xl md:px-8 md:outline md:outline-4 md:outline-offset-8 md:outline-cream-four">
+        <h1 className="mb-6 text-center text-4xl font-bold text-gray-three">
+          ToDo List
         </h1>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <Link
-            className="bg-white/10 hover:bg-white/20 flex max-w-xs flex-col gap-4 rounded-xl p-4"
-            href="https://create.t3.gg/en/usage/first-steps"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">First Steps →</h3>
-            <div className="text-lg">
-              Just the basics - Everything you need to know to set up your
-              database and authentication.
+        {session ? (
+          <>
+            <div className="flex flex-col items-center">
+              <p className="text-l text-white mb-4 text-center">
+                <span>Logged in as {session.user?.email}</span>
+              </p>
+              <SignOutButton />
             </div>
-          </Link>
-          <Link
-            className="bg-white/10 hover:bg-white/20 flex max-w-xs flex-col gap-4 rounded-xl p-4"
-            href="https://create.t3.gg/en/introduction"
-            target="_blank"
-          >
-            <h3 className="text-2xl font-bold">Documentation →</h3>
-            <div className="text-lg">
-              Learn more about Create T3 App, the libraries it uses, and how to
-              deploy it.
+            <div>Todo components coming soon...</div>
+          </>
+        ) : (
+          <div className="flex flex-col items-center">
+            <SignInButton />
+            <div className="mb-5 text-xl">
+              <p className="text-center text-gray-four">
+                Keep your life in order with todolist
+              </p>
+              <p className="text-center text-gray-four">
+                - The ultimate productivity tool -
+              </p>
             </div>
-          </Link>
-        </div>
-        <div className="flex flex-col items-center gap-2">
-          <p className="text-white text-2xl">
-            {hello ? hello.greeting : "Loading tRPC query..."}
-          </p>
-
-          <div className="flex flex-col items-center justify-center gap-4">
-            <p className="text-white text-center text-2xl">
-              {session && <span>Logged in as {session.user?.name}</span>}
-            </p>
-            <Link
-              href={session ? "/api/auth/signout" : "/api/auth/signin"}
-              className="bg-white/10 hover:bg-white/20 rounded-full px-10 py-3 font-semibold no-underline transition"
-            >
-              {session ? "Sign out" : "Sign in"}
-            </Link>
+            <div className="">
+              <Image
+                src="/images/main-img.png"
+                width={600}
+                height={600}
+                alt="main-img"
+              />
+            </div>
           </div>
-        </div>
-      </div>
-    </main>
+        )}
+      </main>
+    </div>
   );
 }
