@@ -2,6 +2,7 @@
 
 import { api } from "~/trpc/react";
 import { Todo } from "./todo";
+import { ProgressBar } from "./progress-bar";
 
 export function Todos() {
   const { data: todos, isLoading, isError } = api.todo.all.useQuery();
@@ -33,6 +34,7 @@ export function Todos() {
           </section>
         );
       })}
+      <ProgressBar todos={todos} />
     </>
   );
 }
