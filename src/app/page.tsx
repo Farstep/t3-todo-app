@@ -4,6 +4,7 @@ import { getServerAuthSession } from "~/server/auth";
 import { SignInButton } from "./_components/sign-in-button";
 import { SignOutButton } from "./_components/sign-out-button";
 import { CreateTodo } from "./_components/create-todo";
+import { Todos } from "./_components/todos";
 
 export const metadata: Metadata = {
   title: "ToDo アプリ",
@@ -29,6 +30,7 @@ export default async function Home() {
             </div>
             <div>
               <CreateTodo />
+              <Todos />
             </div>
           </>
         ) : (
